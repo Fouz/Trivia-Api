@@ -14,10 +14,8 @@ def paginate_questions(request, selection):
   page = request.args.get('page',1,type=int)
   start = (page-1)*QUESTIONS_PER_PAGE
   end = start+QUESTIONS_PER_PAGE
-
   formated_questions = [question.format() for question in selection]
   current_questions = formated_questions[start:end]
-
   return current_questions
 
 def create_app(test_config=None):
@@ -85,8 +83,9 @@ def create_app(test_config=None):
   def search():
     form = request.get_json()
     search_term = form.get('searchTerm')
-    questions = db.session.query(Question).filter(func.lower(
-        Question.question).contains(func.lower(literal(search_term)))).all()
+    if search_term.trim() == "":
+          abort(404)
+    questions = db.session.query(Question).filter(func.lower(Question.question).contains(func.lower(literal(search_term)))).all()
     questions_list = [question.format() for question in questions]
 
     return jsonify({
@@ -105,7 +104,6 @@ def create_app(test_config=None):
       db.session.rollback()
     finally:
       db.session.close()
-    
     return jsonify({
       "success":True
     })
@@ -127,6 +125,8 @@ def create_app(test_config=None):
   @app.route("/questions/add", methods=["POST"])
   def add_questions():
     form = request.get_json ()
+    if not ('question' in form and 'answer' in form and 'difficulty' in form and 'category' in form):
+            abort(422)
     ques = form.get('question')
     answer = form.get('answer')
     difficulty = form.get('difficulty')
@@ -142,7 +142,6 @@ def create_app(test_config=None):
     return jsonify({
         "success": True,
       })
-
 
   @app.route("/play")
   def play():
@@ -177,7 +176,7 @@ def create_app(test_config=None):
     return jsonify({
       "success":False,
       "error":404,
-      "message":"Not Found"
+      "message": "resource not found"
       }),404
   
   @app.errorhandler(422)
@@ -185,10 +184,15 @@ def create_app(test_config=None):
     return jsonify({
         "success": False,
         "error": 422,
-        "message": "Not Found"
+        "message": "unprocessable"
     }), 422
 
+    @app.errorhandler(400)
+    def bad_request(error):
+        return jsonify({
+            "success": False,
+            "error": 400,
+            "message": "bad request"
+        }), 400
 
   return app
-
-    
