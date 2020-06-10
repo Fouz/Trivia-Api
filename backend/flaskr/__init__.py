@@ -131,6 +131,7 @@ def create_app(test_config=None):
     answer = form.get('answer')
     difficulty = form.get('difficulty')
     category = form.get('category')
+
     try:
       question = Question(question=ques, answer=answer, category=category, difficulty=difficulty)
       question.insert()
@@ -141,7 +142,7 @@ def create_app(test_config=None):
     return jsonify({
         "success": True,
       })
-  # Done
+
 
   @app.route("/play")
   def play():
