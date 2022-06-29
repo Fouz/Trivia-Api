@@ -14,5 +14,13 @@ jobs:
         run: | 
           echo ${{ github.event.client_payload.PR  }}
           echo ${{ github.event.client_payload.repo  }}
-          export PR_SHA=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token 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" https://api.github.com/repos/Fouz/coffee-shop/pulls/${{ github.event.client_payload.PR  }}/commits | jq -r '.[0].sha' )
-          curl -X POST -H "Authorization: token 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" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/Fouz/coffee-shop/statuses/${PR_SHA} -d '{"state":"failure", "context": "run", "description": "Skipped for deployment PR.", "target_url":"https://api.github.com/repos/Fouz/coffee-shop/statuses/${PR_SHA}"}'
+          export PR_SHA=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token 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" https://api.github.com/repos/Fouz/coffee-shop/pulls/13/commits | jq -r '.[0].sha' )
+          curl -X POST -H "Authorization: token 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" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/Fouz/coffee-shop/statuses/${PR_SHA} -d '{"state":"failure", "context": "e2e test", "description": "e2e test failed", "target_url":"https://api.github.com/repos/Fouz/coffee-shop/commits/${PR_SHA}/status"}'
+
+# ----
+#           curl \
+#           -H "Accept: application/vnd.github.v3+json" \ 
+#           -H "Authorization: token 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" \
+#           https://api.github.com/repos/OWNER/REPO/commits/REF/statuses
+
+# curl  -H "Accept: application/vnd.github.v3+json"   -H "Authorization: token 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"  https://api.github.com/repos/Fouz/coffee-shop/commits/5eaa6cccdaf5e1f0cc50e710022af2bce452bc89/status
