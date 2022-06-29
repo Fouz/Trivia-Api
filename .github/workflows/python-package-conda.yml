@@ -2,7 +2,7 @@ name: Remote Dispatch Action Responder
 
 on: 
   repository_dispatch:
-    types: ["e2e"]
+    types: [e2e]
 
 jobs:
   ping-pong:
