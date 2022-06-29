@@ -11,5 +11,8 @@ jobs:
       - name: Get Specfic Release
         if: ${{ github.event_name == 'repository_dispatch' }}
         run: | 
-          export PR_SHA=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/repos/mrsool/mrsool-backend/pulls/${{ github.event.client_payload.PR  }}/commits | jq -r '.[0].sha' )
-          curl -X POST -H "Authorization: token ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/mrsool/mrsool-backend/statuses/${PR_SHA} -d '{"state":"success", "context": "run", "description": "Skipped for deployment PR."}'
+          echo ${{ github.event.client_payload.PR  }}
+          echo ${{ github.event.client_payload.repo  }}
+
+          export PR_SHA=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/repos/Fouz/coffee-shop/pulls/${{ github.event.client_payload.PR  }}/commits | jq -r '.[0].sha' )
+          curl -X POST -H "Authorization: token ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/Fouz/coffee-shop/statuses/${PR_SHA} -d '{"state":"success", "context": "run", "description": "Skipped for deployment PR."}'
