@@ -11,5 +11,4 @@ jobs:
       - name: Get Specfic Release
         if: ${{ github.event_name == 'repository_dispatch' }}
         run: | 
-          echo "$github.event"
-          
+          echo "$github.event.client_payload"
