@@ -30,7 +30,7 @@ jobs:
     # Mock to test workflow
     - name: Test app
       id: test-app # will be referenced later
-      continue-on-error: true
+      if: always()
       run: |
         exit 1
         # echo "Testing app (randomly fails)"
@@ -38,12 +38,11 @@ jobs:
 
     # runs always
     - name: test-clean
-      if: always()
-      run: echo "Cleanup after tests"
+      run: echo "Result of test-app was '${{ steps.test-app.outcome }}'"
 
     # runs if previous jobs failed and test-app was not successful (failure/cancelled)
-    - name: action-slack
-      if: failure() && steps.test-app.outcome != 'success'
-      run: |
-        echo "Run action-slack"
-        echo "Result of test-app was '${{ steps.test-app.outcome }}'"
+    # - name: action-slack
+    #   if: failure() && steps.test-app.outcome != 'success'
+    #   run: |
+    #     echo "Run action-slack"
+    #     echo "Result of test-app was '${{ steps.test-app.outcome }}'"
