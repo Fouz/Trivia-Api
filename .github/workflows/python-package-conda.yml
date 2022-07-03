@@ -8,7 +8,7 @@ on:
   repository_dispatch:
     types: [e2e]
 env:
-  continue_on_error: true
+  continue_on_error: "true"
 # jobs:
 #   ping-pong:
 #     runs-on: ubuntu-latest
