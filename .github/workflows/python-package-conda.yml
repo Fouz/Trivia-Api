@@ -27,8 +27,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: "A step"
+      env:
+        BRANCH_REF: "${{ github.ref }}"
+      run: FOO=${{ github.event_name == 'repository_dispatch' }} >> $GITHUB_ENV
+
     - name: Test app
-      continue-on-error: true || ${{ github.event_name == 'repository_dispatch' }}
+      continue-on-error: $FOO
       id: test-app # will be referenced later
       run: |
         exit 1
