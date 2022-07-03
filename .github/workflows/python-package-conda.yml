@@ -7,7 +7,8 @@ on:
       - master
   repository_dispatch:
     types: [e2e]
-
+env:
+  continue_on_error: true
 # jobs:
 #   ping-pong:
 #     runs-on: ubuntu-latest
@@ -30,10 +31,10 @@ jobs:
     - name: "A step"
       env:
         BRANCH_REF: "${{ github.ref }}"
-      run: FOO=${{ github.event_name == 'repository_dispatch' }} >> $GITHUB_ENV
+      run: continue_on_error=${{ github.event_name == 'repository_dispatch' }} 
 
     - name: Test app
-      continue-on-error: $FOO
+      continue-on-error: $continue_on_error
       id: test-app # will be referenced later
       run: |
         exit 1
