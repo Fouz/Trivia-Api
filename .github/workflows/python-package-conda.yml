@@ -32,8 +32,9 @@ jobs:
       id: test-app # will be referenced later
       continue-on-error: true
       run: |
-        echo "Testing app (randomly fails)"
-        if [[ $(($RANDOM % 2)) == 0 ]]; then exit 0; else exit 1; fi
+        exit 1
+        # echo "Testing app (randomly fails)"
+        # if [[ $(($RANDOM % 2)) == 0 ]]; then exit 0; else exit 1; fi
 
     # runs always
     - name: test-clean
