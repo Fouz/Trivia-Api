@@ -34,7 +34,7 @@ jobs:
       run: continue_on_error=${{ github.event_name == 'repository_dispatch' }} 
 
     - name: Test app
-      continue-on-error: $continue_on_error
+      continue-on-error: ${{ continue_on_error}}
       id: test-app # will be referenced later
       run: |
         exit 1
