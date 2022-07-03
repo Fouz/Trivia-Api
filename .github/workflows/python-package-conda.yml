@@ -30,6 +30,7 @@ jobs:
     # Mock to test workflow
     - name: Test app
       id: test-app # will be referenced later
+      if: always()
       run: |
         echo "Testing app (randomly fails)"
         if [[ $(($RANDOM % 2)) == 0 ]]; then exit 0; else exit 1; fi
