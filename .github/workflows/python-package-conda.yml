@@ -30,7 +30,6 @@ jobs:
     # Mock to test workflow
     - name: Test app
       id: test-app # will be referenced later
-      continue-on-error: true
       run: |
         exit 1
         # echo "Testing app (randomly fails)"
