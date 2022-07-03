@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Test app
-        continue-on-error: ${{  github.event_name != 'repository_dispatch'  }}
+        continue-on-error: ${{  github.event_name == 'repository_dispatch'  }}
         id: test-app 
         run: |
           exit 1
