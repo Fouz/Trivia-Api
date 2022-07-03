@@ -28,12 +28,13 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Test app
+      continue-on-error: true && ${{ github.event_name == 'repository_dispatch' }}
       id: test-app # will be referenced later
       run: |
         exit 1
 
     - name: test-clean
-      continue-on-error: true && ${{ github.event_name == 'repository_dispatch' }}
+      
       run: echo "Result of test-app was '${{ steps.test-app.outcome }}'"
 
     # runs if previous jobs failed and test-app was not successful (failure/cancelled)
