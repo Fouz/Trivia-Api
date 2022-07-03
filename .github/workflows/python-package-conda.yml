@@ -32,13 +32,20 @@ jobs:
 
     - name: Test app
       # continue-on-error: ${{  github.event_name != 'repository_dispatch'  }}
+      continue-on-error: true
       id: test-app # will be referenced later
       run: |
-        exit 0
+        exit 1
 
     - name: test-clean
       
-      run: echo "Result of test-app was '${{ steps.test-app.outcome }}'"
+      run: |
+        if ${{steps.test-app.outcome != 'success'}}
+        then
+        echo "failure"
+        else
+        echo "success"
+        fi
 
     # runs if previous jobs failed and test-app was not successful (failure/cancelled)
     # - name: action-slack
