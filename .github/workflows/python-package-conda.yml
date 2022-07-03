@@ -30,7 +30,7 @@ jobs:
 
 
     - name: Test app
-      continue-on-error: "$env.continue_on_error"
+      continue-on-error: "$continue_on_error"
       id: test-app # will be referenced later
       run: |
         exit 1
