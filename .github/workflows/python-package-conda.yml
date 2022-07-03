@@ -31,11 +31,10 @@ jobs:
 
 
     - name: Test app
-      continue-on-error: ${{  github.event_name != 'repository_dispatch'  }}
-      # continue-on-error: ${{ contains(env.continue_on_error, github.event_name != 'repository_dispatch' ) }}
+      # continue-on-error: ${{  github.event_name != 'repository_dispatch'  }}
       id: test-app # will be referenced later
       run: |
-        exit 1
+        exit 0
 
     - name: test-clean
       
