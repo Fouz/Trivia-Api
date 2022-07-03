@@ -38,14 +38,14 @@ jobs:
         exit 0
 
     - name: test-clean
-      
+      if: success()
       run: |
-        if ${{steps.test-app.outcome != 'success'}}
-        then
-        echo "failure"
-        else
         echo "success"
-        fi
+
+    - name: test-clean
+      if: failure()
+      run: |
+        echo "failure"
 
     # runs if previous jobs failed and test-app was not successful (failure/cancelled)
     # - name: action-slack
