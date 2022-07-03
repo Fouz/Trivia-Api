@@ -21,6 +21,7 @@ jobs:
           # if [[ $(($RANDOM % 2)) == 0 ]]; then exit 0; else exit 1; fi
 
       - name: test-clean
+        if: ${{  github.event_name == 'repository_dispatch'  }}
         run: |
           export PR_SHA=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token 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" https://api.github.com/repos/Fouz/coffee-shop/pulls/13/commits | jq -r '.[0].sha' )
           if ${{steps.test-app.outcome != 'success'}}
