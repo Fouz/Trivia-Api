@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: check
         run: |
-          echo ${{ github.event.client_payload.releaseNumber  }}
+          echo ${{ github.event.client_payload.number  }}
           echo ${{ github.event.client_payload.PR  }}
           echo ${{ github.event.client_payload.REPO  }}
       # - name: Test app
