@@ -11,26 +11,26 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: check
+      # - name: check
+      #   run: |
+      #     echo ${{ github.event.client_payload.number  }}
+      #     echo ${{ github.event.client_payload.PR  }}
+      #     echo ${{ github.event.client_payload.REPO  }}
+      - name: Test app
+        continue-on-error: ${{  github.event_name == 'repository_dispatch'  }}
+        id: test-app 
         run: |
-          echo ${{ github.event.client_payload.number  }}
-          echo ${{ github.event.client_payload.PR  }}
-          echo ${{ github.event.client_payload.REPO  }}
-      # - name: Test app
-      #   continue-on-error: ${{  github.event_name == 'repository_dispatch'  }}
-      #   id: test-app 
-      #   run: |
-      #     exit 0
-      #     # echo "Testing app (randomly fails)"
-      #     # if [[ $(($RANDOM % 2)) == 0 ]]; then exit 0; else exit 1; fi
+          exit 1
+          # echo "Testing app (randomly fails)"
+          # if [[ $(($RANDOM % 2)) == 0 ]]; then exit 0; else exit 1; fi
 
-      # - name: test-clean
-      #   if: ${{  github.event_name == 'repository_dispatch'  }}
-      #   run: |
-      #     export PR_SHA=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token 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" https://api.github.com/repos/Fouz/coffee-shop/pulls/13/commits | jq -r '.[0].sha' )
-      #     if ${{steps.test-app.outcome != 'success'}}
-      #     then
-      #     curl -X POST -H "Authorization: token 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" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/Fouz/coffee-shop/statuses/${{ github.event.client_payload.PR  }} -d '{"state":"error", "context": "e2e test", "description": "e2e test failed", "target_url":"https://api.github.com/repos/Fouz/coffee-shop/commits/${PR_SHA}/status"}'
-      #     else
-      #     curl -X POST -H "Authorization: token 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" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/Fouz/coffee-shop/statuses/${{ github.event.client_payload.PR  }} -d '{"state":"success", "context": "e2e test", "description": "e2e test failed", "target_url":"https://api.github.com/repos/Fouz/coffee-shop/commits/${PR_SHA}/status"}'
-      #     fi
+      - name: test-clean
+        if: ${{  github.event_name == 'repository_dispatch'  }}
+        run: |
+          export PR_SHA=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token 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" https://api.github.com/repos/Fouz/coffee-shop/pulls/13/commits | jq -r '.[0].sha' )
+          if ${{steps.test-app.outcome != 'success'}}
+          then
+          curl -X POST -H "Authorization: token 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" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/Fouz/coffee-shop/statuses/${{ github.event.client_payload.PR  }} -d '{"state":"error", "context": "e2e test", "description": "e2e test failed", "target_url":"https://api.github.com/repos/Fouz/coffee-shop/commits/${PR_SHA}/status"}'
+          else
+          curl -X POST -H "Authorization: token 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" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/Fouz/coffee-shop/statuses/${{ github.event.client_payload.PR  }} -d '{"state":"success", "context": "e2e test", "description": "e2e test failed", "target_url":"https://api.github.com/repos/Fouz/coffee-shop/commits/${PR_SHA}/status"}'
+          fi
